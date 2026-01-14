@@ -6,6 +6,14 @@ import {OrganizationUsersConverter} from "./organizationUsersConverter.js";
 import {ProjectsConverter} from "./projectsConverter.js";
 import {EnvironmentsConverter} from "./environmentsConverter.js";
 import {EndUserPropertiesConverterConverter} from "./endUserPropertiesConverter.js";
+import {SegmentsConverter} from "./segmentsConverter.js";
+import {FlagsConverter} from "./flagsConverter.js";
+import {FlagSchedulesConverter} from "./flagSchedulesConverter.js";
+import {FlagChangeRequestsConverter} from "./flagChangeRequestsConverter.js";
+import {TriggersConverter} from "./triggersConverter.js";
+import {AuditLogsConverter} from "./audditLogsConverter.js";
+import {FlagRevisionsConverter} from "./flagRevisionsConverter.js";
+import {FlagDraftsConverter} from "./flagDraftsConverter.js";
 
 export class Converter {
     static getConverter(collection) {
@@ -26,6 +34,22 @@ export class Converter {
                 return new EnvironmentsConverter();
             case "EndUserProperties":
                 return new EndUserPropertiesConverterConverter();
+            case "Segments":
+                return new SegmentsConverter();
+            case "FeatureFlags":
+                return new FlagsConverter();
+            case "FlagRevisions":
+                return new FlagRevisionsConverter();
+            case "FlagDrafts":
+                return new FlagDraftsConverter();
+            case "FlagSchedules":
+                return new FlagSchedulesConverter();
+            case "FlagChangeRequests":
+                return new FlagChangeRequestsConverter();
+            case "Triggers":
+                return new TriggersConverter();
+            case "AuditLogs":
+                return new AuditLogsConverter();
             default:
                 throw new Error(`No converter found for collection: ${collection}`);
         }

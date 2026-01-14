@@ -88,7 +88,7 @@ export class ConverterBase {
 
             return `"{${escapedValues.join(',')}}"`;
         } else {
-            return '{}';
+            return '"{}"';
         }
     }
 }
