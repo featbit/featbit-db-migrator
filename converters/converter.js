@@ -1,6 +1,11 @@
 import { UsersConverter } from "./usersConverter.js";
 import {WebhooksConverter} from "./webhooksConverter.js";
 import {WorkspacesConverter} from "./workspacesConverter.js";
+import {OrganizationsConverter} from "./organizationsConverter.js";
+import {OrganizationUsersConverter} from "./organizationUsersConverter.js";
+import {ProjectsConverter} from "./projectsConverter.js";
+import {EnvironmentsConverter} from "./environmentsConverter.js";
+import {EndUserPropertiesConverterConverter} from "./endUserPropertiesConverter.js";
 
 export class Converter {
     static getConverter(collection) {
@@ -11,6 +16,16 @@ export class Converter {
                 return new WebhooksConverter();
             case "Workspaces":
                 return new WorkspacesConverter();
+            case "Organizations":
+                return new OrganizationsConverter();
+            case "OrganizationUsers":
+                return new OrganizationUsersConverter();
+            case "Projects":
+                return new ProjectsConverter();
+            case "Environments":
+                return new EnvironmentsConverter();
+            case "EndUserProperties":
+                return new EndUserPropertiesConverterConverter();
             default:
                 throw new Error(`No converter found for collection: ${collection}`);
         }
