@@ -10,7 +10,7 @@ export const TABLE_MAPPING = {
   // Environments: "environments",
   // EndUserProperties: "end_user_properties",
   // Segments: "segments",
-  // FeatureFlags: "feature_flags",
+  FeatureFlags: "feature_flags",
   // FlagRevisions: "flag_revisions",
   // FlagDrafts: "flag_drafts",
   // FlagSchedules: "flag_schedules",

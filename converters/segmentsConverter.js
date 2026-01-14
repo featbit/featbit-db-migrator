@@ -10,7 +10,7 @@ export class SegmentsConverter extends ConverterBase {
                 let value = doc[mongoField];
 
                 if (col === 'scopes' || col === 'tags' || col === 'included' || col === 'excluded') {
-                    return this.toArrayValue(value);
+                    return this.toStringArrayValue(value);
                 }
 
                 return this.toStringValue(value);

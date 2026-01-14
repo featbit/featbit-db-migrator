@@ -10,7 +10,7 @@ export class FeatureFlagsConverter extends ConverterBase {
                 let value = doc[mongoField];
 
                 if (col === 'tags') {
-                    return this.toArrayValue(value);
+                    return this.toStringArrayValue(value);
                 }
 
                 return this.toStringValue(value);
