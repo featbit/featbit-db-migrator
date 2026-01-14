@@ -1,11 +1,16 @@
 import { UsersConverter } from "./usersConverter.js";
 import { WebhooksConverter } from "./webhooksConverter.js";
-import {WorkspacesConverter} from "./workspacesConverter.js";
-import {OrganizationsConverter} from "./organizationsConverter.js";
-import {OrganizationUsersConverter} from "./organizationUsersConverter.js";
-import {ProjectsConverter} from "./projectsConverter.js";
-import {EnvironmentsConverter} from "./environmentsConverter.js";
-import {EndUserPropertiesConverterConverter} from "./endUserPropertiesConverter.js";
+import { WorkspacesConverter } from "./workspacesConverter.js";
+import { OrganizationsConverter } from "./organizationsConverter.js";
+import { OrganizationUsersConverter } from "./organizationUsersConverter.js";
+import { ProjectsConverter } from "./projectsConverter.js";
+import { EnvironmentsConverter } from "./environmentsConverter.js";
+import { EndUserPropertiesConverter } from "./endUserPropertiesConverter.js";
+import { GroupConverter } from "./groupConverter.js";
+import { PolicyConverter } from "./policyConverter.js";
+import { GroupMemberConverter } from "./groupMemberConverter.js";
+import { GroupPolicyConverter } from "./groupPolicyConverter.js";
+import { MemberPolicyConverter } from "./memberPolicyConverter.js";
 
 export class Converter {
     static getConverter(collection) {
@@ -25,7 +30,18 @@ export class Converter {
             case "Environments":
                 return new EnvironmentsConverter();
             case "EndUserProperties":
-                return new EndUserPropertiesConverterConverter();
+                return new EndUserPropertiesConverter();
+
+            case "Groups":
+                return new GroupConverter();
+            case "Policies":
+                return new PolicyConverter();
+            case "GroupMembers":
+                return new GroupMemberConverter();
+            case "GroupPolicies":
+                return new GroupPolicyConverter();
+            case "MemberPolicies":
+                return new MemberPolicyConverter();
             default:
                 throw new Error(`No converter found for collection: ${collection}`);
         }

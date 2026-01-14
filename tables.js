@@ -29,7 +29,7 @@ export const TABLE_MAPPING = {
 
   // AccessTokens: "access_tokens",
   // RelayProxies: "relay_proxies",
-  Webhooks: "webhooks",
+  // Webhooks: "webhooks",
   // WebhookDeliveries: "webhook_deliveries",
 
   // ignore endusers and events for now
