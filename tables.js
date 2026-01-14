@@ -1,6 +1,6 @@
 // mongodb collection name -> postgres table name
 export const TABLE_MAPPING = {
-  Users: "users",
+  //Users: "users",
 
   // Workspaces: "workspaces",
 
@@ -84,8 +84,3 @@ export const PG_TABLE_ARRAY_TYPES = [
   "webhooks.scopes",
   "webhooks.events",
 ]
-
-export function pgColumnToMongoField(pg_column) {
-  // snake_case to camelCase
-  return pg_column.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
-}

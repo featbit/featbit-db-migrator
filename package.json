@@ -4,6 +4,7 @@
   "description": "A NodeJS script to migrate data from MongoDb to PostgreSQL for **FeatBit v5.2.0**",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

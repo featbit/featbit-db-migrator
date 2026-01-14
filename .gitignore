@@ -140,3 +140,4 @@ vite.config.ts.timestamp-*
 
 # csv files
 csvs
+.idea

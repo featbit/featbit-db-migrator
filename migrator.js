@@ -1,6 +1,6 @@
 import fs from "fs";
-import { PG_TABLE_COLUMNS, TABLE_MAPPING, PG_MISSING_COLUMN_DEFAULT_VALUES, pgColumnToMongoField } from "./tables.js";
-import { toCsvValue } from "./utils.js";
+import { TABLE_MAPPING } from "./tables.js";
+import {Converter} from "./converters/converter.js";
 
 export class Migrator {
   constructor(mongodb, postgres) {
@@ -44,33 +44,9 @@ export class Migrator {
         return;
       }
 
-      const pg_columns = PG_TABLE_COLUMNS[mongoCollection];
-
       // Generate CSV content
-      const csvRows = toInsert.map(doc => {
-        const rowValues = [doc._id.toString()]; // id column
+      const content = Converter.getConverter(mongoCollection).toCsv(toInsert);
 
-        for (const pgColumn of pg_columns.slice(1)) { // skip id
-          const mongoField = pgColumnToMongoField(pgColumn);
-          let value = doc[mongoField];
-          if (value === undefined) {
-            // for missing column, use default value
-            const defaultValue = PG_MISSING_COLUMN_DEFAULT_VALUES[pgColumn];
-            if (defaultValue === undefined) {
-              throw new Error(`Missing value for column "${pgColumn}" in collection "${mongoCollection}" and no default value defined.`);
-            }
-
-            value = defaultValue;
-          }
-
-          const csvValue = toCsvValue(pgTable, pgColumn, value);
-          rowValues.push(csvValue);
-        }
-
-        return rowValues.join(',');
-      });
-
-      const content = csvRows.join('\n');
       const csvPath = `./csvs/${pgTable}.csv`;
       fs.writeFileSync(csvPath, content);
       console.log(`Successfully generated CSV: ${csvPath}`);
