@@ -5,7 +5,7 @@ export class FlagRevisionsConverter extends ConverterBase {
 
     toCsv(mongoDocs) {
       return mongoDocs.map(doc => {
-        return pgColumns.map(col => {
+        return this.pgColumns.map(col => {
           const mongoField = this.getMongoFieldFromPgColumn(col);
           let value = doc[mongoField];
 
