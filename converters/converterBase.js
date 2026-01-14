@@ -1,6 +1,5 @@
-import {PG_TABLE_ARRAY_TYPES} from "../tables.js";
-
 export class ConverterBase {
+    DELIMITER = '|';
 
     toCsv(mongoDocs, pgColumns) {
         return mongoDocs.map(doc => {
@@ -9,16 +8,16 @@ export class ConverterBase {
                 let value = doc[mongoField];
 
                 return this.toStringValue(value);
-            }).join(',');
+            }).join(this.DELIMITER);
         }).join('\n');
     }
 
     getMongoFieldFromPgColumn(pg_column) {
-        // snake_case to camelCase
         if (pg_column === 'id') {
             return '_id';
         }
 
+        // snake_case to camelCase
         return pg_column.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
     }
 
@@ -60,9 +59,9 @@ export class ConverterBase {
             return `"${jsonStr.replace(/"/g, '""')}"`;
         }
 
-        // Handle strings - escape quotes and wrap if contains comma, newline, or quote
+        // Handle strings - escape quotes and wrap if contains delimiter, newline, or quote
         const strValue = String(value);
-        if (strValue.includes(',') || strValue.includes('\n') || strValue.includes('"')) {
+        if (strValue.includes(this.DELIMITER) || strValue.includes('\n') || strValue.includes('"')) {
             return `"${strValue.replace(/"/g, '""')}"`;
         }
 
@@ -71,8 +70,23 @@ export class ConverterBase {
 
     toArrayValue(value) {
         if (Array.isArray(value)) {
-            const quotedValues = value.map(v => `"${String(v).replace(/"/g, '\\"')}"`);
-            return `"{${quotedValues.join(',')}}"`;
+            const escapedValues = [];
+
+            for (const v of value) {
+                if (v === null || v === undefined) {
+                    escapedValues.push('');
+                }
+
+                if (v === '') {
+                    escapedValues.push('""');
+                }
+
+                // escape commas
+                const escaped = String(v).replace(/,/g, '\\,');
+                escapedValues.push(`""${escaped}""`);
+            }
+
+            return `"{${escapedValues.join(',')}}"`;
         } else {
             return '{}';
         }

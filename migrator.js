@@ -1,6 +1,6 @@
 import fs from "fs";
 import { TABLE_MAPPING } from "./tables.js";
-import {Converter} from "./converters/converter.js";
+import { Converter } from "./converters/converter.js";
 
 export class Migrator {
   constructor(mongodb, postgres) {
@@ -46,7 +46,6 @@ export class Migrator {
 
       // Generate CSV content
       const content = Converter.getConverter(mongoCollection).toCsv(toInsert);
-
       const csvPath = `./csvs/${pgTable}.csv`;
       fs.writeFileSync(csvPath, content);
       console.log(`Successfully generated CSV: ${csvPath}`);

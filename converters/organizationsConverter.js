@@ -19,7 +19,7 @@ export class OrganizationsConverter extends ConverterBase {
                 }
 
                 return this.toStringValue(value);
-            }).join(',');
+            }).join(this.DELIMITER);
         }).join('\n');
     }
 }
