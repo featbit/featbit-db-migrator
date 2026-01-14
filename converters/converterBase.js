@@ -3,7 +3,7 @@ export class ConverterBase {
 
     toCsv(mongoDocs, pgColumns) {
         return mongoDocs.map(doc => {
-            return this.pgColumns.map(col => {
+            return pgColumns.map(col => {
                 const mongoField = this.getMongoFieldFromPgColumn(col);
                 let value = doc[mongoField];
 
@@ -68,7 +68,7 @@ export class ConverterBase {
         return strValue;
     }
 
-    toArrayValue(value) {
+    toStringArrayValue(value) {
         if (Array.isArray(value)) {
             const escapedValues = [];
 
