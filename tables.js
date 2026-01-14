@@ -32,6 +32,6 @@ export const TABLE_MAPPING = [
   { WebhookDeliveries: "webhook_deliveries" },
 
   // ignore endusers and events for now
-  { EndUsers: "end_users" },
-  { Events: "events" },
+  // { EndUsers: "end_users" },
+  // { Events: "events" },
 ];
