@@ -84,8 +84,10 @@ export class ConverterBase {
                 }
 
                 // Convert to string and escape double quotes by doubling them
-                const escaped = String(v).replace(/"/g, '""');
-                
+                const escaped = String(v)
+                  .replace(/,/g, '\\,')
+                  .replace(/"/g, '""');
+
                 // Always quote elements to handle special characters (commas, braces, whitespace)
                 escapedValues.push(`"${escaped}"`);
             }
