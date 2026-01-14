@@ -14,13 +14,13 @@ export class Migrator {
       fs.mkdirSync('./csvs');
     }
 
-    for (const tableMapping of Object.entries(TABLE_MAPPING)) {
-      const [collection, table] = tableMapping;
-      await this.#generate_csv_core(collection, table);
+    for (let i = 0; i < TABLE_MAPPING.length; i++) {
+      const [collection, table] = Object.entries(TABLE_MAPPING[i])[0];
+      await this.#generate_csv_core(i, collection, table)
     }
   }
 
-  async #generate_csv_core(mongoCollection, pgTable) {
+  async #generate_csv_core(index, mongoCollection, pgTable) {
     console.log(`Generating CSV for mongo collection "${mongoCollection}" to pg table "${pgTable}"...`);
 
     try {
@@ -46,7 +46,7 @@ export class Migrator {
 
       // Generate CSV content
       const content = Converter.getConverter(mongoCollection).toCsv(toInsert);
-      const csvPath = `./csvs/${pgTable}.csv`;
+      const csvPath = `./csvs/${index}_${pgTable}.csv`;
       fs.writeFileSync(csvPath, content);
       console.log(`Successfully generated CSV: ${csvPath}`);
     } catch (error) {
