@@ -19,7 +19,7 @@ export class ExperimentConverter extends ConverterBase {
             }
             return newIteration;
           });
-          
+
           return this.toStringValue(value);
         }
 

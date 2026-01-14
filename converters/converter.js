@@ -6,13 +6,17 @@ import { OrganizationUsersConverter } from "./organizationUsersConverter.js";
 import { ProjectsConverter } from "./projectsConverter.js";
 import { EnvironmentsConverter } from "./environmentsConverter.js";
 import { EndUserPropertiesConverter } from "./endUserPropertiesConverter.js";
+
 import { GroupConverter } from "./groupConverter.js";
 import { PolicyConverter } from "./policyConverter.js";
 import { GroupMemberConverter } from "./groupMemberConverter.js";
 import { GroupPolicyConverter } from "./groupPolicyConverter.js";
 import { MemberPolicyConverter } from "./memberPolicyConverter.js";
+
 import { ExperimentConverter } from "./experimentConverter.js";
 import { ExperimentMetricConverter } from "./experimentMetricConverter.js";
+
+import { AccessTokenConverter } from "./accessTokenConverter.js";
 
 export class Converter {
     static getConverter(collection) {
@@ -49,6 +53,9 @@ export class Converter {
                 return new ExperimentConverter();
             case "ExperimentMetrics":
                 return new ExperimentMetricConverter();
+
+            case "AccessTokens":
+                return new AccessTokenConverter();
             default:
                 throw new Error(`No converter found for collection: ${collection}`);
         }
