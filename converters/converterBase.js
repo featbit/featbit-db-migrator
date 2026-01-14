@@ -75,15 +75,19 @@ export class ConverterBase {
             for (const v of value) {
                 if (v === null || v === undefined) {
                     escapedValues.push('');
+                    continue
                 }
 
                 if (v === '') {
                     escapedValues.push('""');
+                    continue
                 }
 
-                // escape commas
-                const escaped = String(v).replace(/,/g, '\\,');
-                escapedValues.push(`""${escaped}""`);
+                // Convert to string and escape double quotes by doubling them
+                const escaped = String(v).replace(/"/g, '""');
+                
+                // Always quote elements to handle special characters (commas, braces, whitespace)
+                escapedValues.push(`"${escaped}"`);
             }
 
             return `"{${escapedValues.join(',')}}"`;
