@@ -17,14 +17,14 @@ import { ExperimentConverter } from "./experimentConverter.js";
 import { ExperimentMetricConverter } from "./experimentMetricConverter.js";
 
 import { AccessTokenConverter } from "./accessTokenConverter.js";
+import { RelayProxyConverter } from "./relayProxyConverter.js";
 
 export class Converter {
     static getConverter(collection) {
         switch (collection) {
             case "Users":
                 return new UsersConverter();
-            case "Webhooks":
-                return new WebhooksConverter();
+
             case "Workspaces":
                 return new WorkspacesConverter();
             case "Organizations":
@@ -56,6 +56,10 @@ export class Converter {
 
             case "AccessTokens":
                 return new AccessTokenConverter();
+            case "RelayProxies":
+                return new RelayProxyConverter();
+            case "Webhooks":
+                return new WebhooksConverter();
             default:
                 throw new Error(`No converter found for collection: ${collection}`);
         }
