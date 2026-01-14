@@ -68,7 +68,19 @@ export class ConverterBase {
         return strValue;
     }
 
-    toArrayValue(value) {
+    toObjectArrayValue(value) {
+        if (Array.isArray(value)) {
+            const escapedValues = value.map(v => {
+                const jsonStr = JSON.stringify(v);
+                return `{${jsonStr.replace(/"/g, '""')}}`;
+            });
+            return `"[${escapedValues.join(',')}]"`;
+            } else {
+            return '"[]"';
+        }
+    }
+
+    toStringArrayValue(value) {
         if (Array.isArray(value)) {
             const escapedValues = [];
 
@@ -88,7 +100,7 @@ export class ConverterBase {
 
             return `"{${escapedValues.join(',')}}"`;
         } else {
-            return '{}';
+            return '"{}"';
         }
     }
 }

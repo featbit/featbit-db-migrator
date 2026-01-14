@@ -17,7 +17,7 @@ export class WebhooksConverter extends ConverterBase {
                 switch (col) {
                     case 'events':
                     case 'scopes':
-                        return this.toArrayValue(value);
+                        return this.toStringArrayValue(value);
                     default:
                         return this.toStringValue(value);
                 }

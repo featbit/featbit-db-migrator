@@ -1,4 +1,4 @@
-import {ConverterBase} from "./converterBase.js";
+import { ConverterBase } from "./converterBase.js";
 
 export class PolicyConverter extends ConverterBase {
   pgColumns = ["id", "organization_id", "name", "description", "type", "statements", "created_at", "updated_at"];

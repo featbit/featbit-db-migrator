@@ -11,6 +11,8 @@ import { PolicyConverter } from "./policyConverter.js";
 import { GroupMemberConverter } from "./groupMemberConverter.js";
 import { GroupPolicyConverter } from "./groupPolicyConverter.js";
 import { MemberPolicyConverter } from "./memberPolicyConverter.js";
+import { ExperimentConverter } from "./experimentConverter.js";
+import { ExperimentMetricConverter } from "./experimentMetricConverter.js";
 
 export class Converter {
     static getConverter(collection) {
@@ -42,6 +44,11 @@ export class Converter {
                 return new GroupPolicyConverter();
             case "MemberPolicies":
                 return new MemberPolicyConverter();
+
+            case "Experiments":
+                return new ExperimentConverter();
+            case "ExperimentMetrics":
+                return new ExperimentMetricConverter();
             default:
                 throw new Error(`No converter found for collection: ${collection}`);
         }
