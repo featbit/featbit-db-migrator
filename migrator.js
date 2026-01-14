@@ -1,6 +1,6 @@
 import fs from "fs";
 import { PG_TABLE_COLUMNS, TABLE_MAPPING, PG_MISSING_COLUMN_DEFAULT_VALUES, pgColumnToMongoField } from "./tables.js";
-import { toPgInsertValue, toCsvValue } from "./utils.js";
+import { toCsvValue } from "./utils.js";
 
 export class Migrator {
   constructor(mongodb, postgres) {
@@ -9,7 +9,7 @@ export class Migrator {
   }
 
   async generate_csv() {
-    // ensure migration_scripts folder exists
+    // create csvs directory if not exists
     if (!fs.existsSync('./csvs')) {
       fs.mkdirSync('./csvs');
     }
@@ -71,10 +71,9 @@ export class Migrator {
       });
 
       const content = csvRows.join('\n');
-      const csvName = `${mongoCollection}_to_${pgTable}.csv`;
-      fs.writeFileSync(`./migration_scripts/${csvName}`, content);
-      console.log(`Successfully generated CSV: migration_scripts/${csvName}`);
-      console.log(`To import, use: COPY ${pgTable} (${pg_columns.join(', ')}) FROM '/path/to/${csvName}' WITH (FORMAT csv);`);
+      const csvPath = `./csvs/${pgTable}.csv`;
+      fs.writeFileSync(csvPath, content);
+      console.log(`Successfully generated CSV: ${csvPath}`);
     } catch (error) {
       console.error(`Error generating CSV for mongo collection "${mongoCollection}" to pg table "${pgTable}":`, error);
     }

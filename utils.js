@@ -2,7 +2,12 @@ import { PG_TABLE_ARRAY_TYPES } from './tables.js';
 
 export const toCsvValue = (pgTable, pgColumn, mongoValue) => {
   const fullColumnName = `${pgTable}.${pgColumn}`;
-  
+
+  // Handle empty string
+  if (mongoValue === '') {
+    return '""';
+  }
+
   // Handle NULL values
   if (mongoValue === null || mongoValue === undefined) {
     return '';
