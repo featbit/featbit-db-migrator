@@ -9,6 +9,14 @@ export class FeatureFlagsConverter extends ConverterBase {
                 const mongoField = this.getMongoFieldFromPgColumn(col);
                 let value = doc[mongoField];
 
+                if (col === 'variations' || col === 'rules' || col === "fallthrough") {
+                  // replace all _id with id in JSON string
+                  const normalizedJsonValue = JSON.stringify(value).replace(/"_id":/g, '"id":');
+                  const normalizedValue = JSON.parse(normalizedJsonValue);
+  
+                  return this.toStringValue(normalizedValue);
+                }
+
                 if (col === 'tags') {
                     return this.toStringArrayValue(value);
                 }
