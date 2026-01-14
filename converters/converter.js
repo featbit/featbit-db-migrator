@@ -7,7 +7,7 @@ import {ProjectsConverter} from "./projectsConverter.js";
 import {EnvironmentsConverter} from "./environmentsConverter.js";
 import {EndUserPropertiesConverterConverter} from "./endUserPropertiesConverter.js";
 import {SegmentsConverter} from "./segmentsConverter.js";
-import {FlagsConverter} from "./flagsConverter.js";
+import {FeatureFlagsConverter} from "./featureFlagsConverter.js";
 import {FlagSchedulesConverter} from "./flagSchedulesConverter.js";
 import {FlagChangeRequestsConverter} from "./flagChangeRequestsConverter.js";
 import {TriggersConverter} from "./triggersConverter.js";
@@ -37,7 +37,7 @@ export class Converter {
             case "Segments":
                 return new SegmentsConverter();
             case "FeatureFlags":
-                return new FlagsConverter();
+                return new FeatureFlagsConverter();
             case "FlagRevisions":
                 return new FlagRevisionsConverter();
             case "FlagDrafts":
