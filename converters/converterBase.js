@@ -2,6 +2,17 @@ import {PG_TABLE_ARRAY_TYPES} from "../tables.js";
 
 export class ConverterBase {
 
+    toCsv(mongoDocs, pgColumns) {
+        return mongoDocs.map(doc => {
+            return this.pgColumns.map(col => {
+                const mongoField = this.getMongoFieldFromPgColumn(col);
+                let value = doc[mongoField];
+
+                return this.toStringValue(value);
+            }).join(',');
+        }).join('\n');
+    }
+
     getMongoFieldFromPgColumn(pg_column) {
         // snake_case to camelCase
         if (pg_column === 'id') {
