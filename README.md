@@ -66,13 +66,13 @@ Connection String Formats:
     # Then run each \copy command from scripts-to-run.sql individually
     ```
 
-    > [!NOTE]
-    > The following collections are **not migrated** by this tool:
-    >
-    > - `EndUsers` - End user data
-    > - `Events` - Analytics and insights data
-    >
-    > These collections typically contain large volumes of data and may require separate migration strategies.
+> [!NOTE]
+> The following collections are **not migrated** by this tool:
+>
+> - `EndUsers` - End user data
+> - `Events` - Analytics and insights data
+>
+> These collections typically contain large volumes of data and may require separate migration strategies.
 
 ## Troubleshooting
 
