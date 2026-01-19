@@ -34,8 +34,8 @@ const sqlCommands = csvFiles.map(file => {
   return `\\copy ${tableName} from '${absolutePath}' WITH DELIMITER '|' CSV ENCODING 'UTF8';`;
 });
 
-// Join all commands with newlines and write to script.sql
+// Join all commands with newlines and write to scripts-to-run.sql
 const sqlContent = sqlCommands.join('\n') + '\n';
-writeFileSync('script.sql', sqlContent);
+writeFileSync('scripts-to-run.sql', sqlContent);
 
-console.log(`script.sql has been generated with ${csvFiles.length} commands`);
+console.log(`scripts-to-run.sql has been generated with ${csvFiles.length} commands`);
