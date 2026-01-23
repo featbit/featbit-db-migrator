@@ -86,8 +86,8 @@ Connection String Formats:
 ### Import Errors
 
 - Check PostgreSQL logs for detailed error messages
-- Verify CSV files in csvs/ directory are not empty
-- Ensure file paths in scripts-to-run.sql are absolute paths
+- Verify CSV files in `csvs/` directory are not empty
+- Ensure file paths in `scripts-to-run.sql` are absolute paths
 - Check for encoding issues (UTF-8 is required)
 
 If you encounter issues not covered here, please open an issue in this repository or join our [Slack community](https://join.slack.com/t/featbit/shared_invite/zt-1ew5e2vbb-x6Apan1xZOaYMnFzqZkGNQ) for assistance.
