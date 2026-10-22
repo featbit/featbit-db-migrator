@@ -1,93 +1,87 @@
-## Overview
+# Overview
 
-A Node.js utility to migrate data from MongoDB to PostgreSQL for **FeatBit v5.2.0**.
+A Node.js utility for migrating an **already-upgraded FeatBit 5.4.10 MongoDB database into an empty PostgreSQL database**. For FeatBit 5.2.0, use the [v5.2.0 release](https://github.com/featbit/featbit-db-migrator/releases/tag/v5.2.0).
 
 > [!CAUTION]
-> Please do test migration with an empty PostgreSQL database first and always review the SQL scripts before executing them against production.
+> Test the migration with an empty PostgreSQL database first, and review the generated SQL scripts before running them in production.
+
+## Scope
+
+**Excluded:**
+
+- `Events`: excluded because the collection may contain a large volume of data. If historical events are required, plan a separate migration with an appropriate scope, such as only the most recent month. Upgrading to FeatBit 6.0 also does not migrate historical Events data; see [Historical data in the v6 upgrade guide](https://docs.featbit.co/installation/upgrade/upgrade-to-v6#historical-data).
+- `QueueMessages`: PostgreSQL message-queue storage. MongoDB deployments use Redis for their message queue, so there is no corresponding MongoDB collection to migrate.
+
+**Limitation:** Export stops if `EndUsers` collection exceeds `END_USERS_AUTO_MIGRATION_LIMIT` (default: 10,000 records). Assess data size and migration time before increasing this value in `.env`.
 
 ## Prerequisites
 
-- Access to your FeatBit MongoDB database
-- Access to your target PostgreSQL database
-- FeatBit deployment **upgraded to v5.2.0 before migration**
-
-## Setup
-
-1. Initialize your PostgreSQL database by running the [`init-pg.sql`](init-pg.sql) script. This script will:
-
-   - Create the `featbit` database.
-   - Create all necessary tables and indexes.
-
-2. Clone this repository to your local machine and install dependencies:
-   ```bash
-   git clone <repository-url>
-   cd featbit-db-migrator
-   npm install
-   ```
-3. Configure Connection Strings:
-   - Create a `.env` file in the root directory based on the `.env.template` file.
-   - Fill in your MongoDB and PostgreSQL connection strings in the `.env` file.
-
-Connection String Formats:
-
-- **MongoDB**: Follow the [MongoDB connection string format](https://www.mongodb.com/docs/manual/reference/connection-string/).
-- **PostgreSQL**: Follow the [Postgres connection string format](https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string).
+- Node.js >= 20.19.0, npm, Git and `psql`.
+- A MongoDB database upgraded to FeatBit 5.4.10
+- A PostgreSQL server
 
 ## Usage
 
-1. Generate CSV Files
+Clone this repository and enter its directory:
 
-    Run the following command to extract data from MongoDB and generate CSV files:
-    ```bash
-    node index.js
-    ```
+```bash
+git clone --branch feat/migrate-featbit-5.4.10 --single-branch https://github.com/featbit/featbit-db-migrator.git
+cd featbit-db-migrator
+```
 
-    This will:
-    - Connect to both MongoDB and PostgreSQL
-    - Extract data from MongoDB collections
-    - Filter out records that already exist in PostgreSQL
-    - Generate CSV files for each collection in the `csvs/` directory
+### 1. Configure and initialize
 
-2. Generate Import Scripts
+Install dependencies and copy the configuration template:
 
-    Run the following command to generate SQL import scripts:
-    ```bash
-    node get-scripts.js
-    ```
+```bash
+npm ci
+cp .env.example .env
+```
 
-    This will create a file named `scripts-to-run.sql` containing `\copy` commands to import each CSV file into the corresponding PostgreSQL table.
+Edit `.env` with your MongoDB and PostgreSQL connections; see the comments in `.env.example`. The PostgreSQL initialization account needs permission to create databases and the `pg_trgm` extension. Then create the empty `featbit` database and tables:
 
-3. Import Data to PostgreSQL
+```bash
+npm run init-postgres
+```
 
-    For better progress monitoring and error handling, we recommend executing commands one at a time:
+Run initialization only once, before importing data. Do not start FeatBit against the target until migration is complete.
 
-    ```bash
-    psql -U your_username -d featbit
-    # Then run each \copy command from scripts-to-run.sql individually
-    ```
+### 2. Export MongoDB data
+
+Export the MongoDB data to `csvs/` in the project root:
+```bash
+npm run export-from-mongodb
+```
 
 > [!NOTE]
-> The following collections are **not migrated** by this tool:
->
-> - `EndUsers` - End user data
-> - `Events` - Analytics and insights data
->
-> These collections typically contain large volumes of data and may require separate migration strategies.
+> Each export replaces the previous contents of `csvs/`. Back up any files you want to keep.
 
-## Troubleshooting
+The directory contains one CSV per collection and a `manifest.json` file. Continue only after export succeeds.
 
-### Connection Errors
+### 3. Review the import SQL (optional)
 
-- Verify connection strings are correct
-- Check network access to both databases
-- Ensure MongoDB user has read permissions
-- Ensure PostgreSQL user has write permissions
+Generate the SQL without importing data:
 
-### Import Errors
+```bash
+npm run generate-import-sql
+```
 
-- Check PostgreSQL logs for detailed error messages
-- Verify CSV files in `csvs/` directory are not empty
-- Ensure file paths in `scripts-to-run.sql` are absolute paths
-- Check for encoding issues (UTF-8 is required)
+Open `csvs/scripts-to-run.sql` in your editor to review it. This is recommended before a production migration. The import command regenerates this file, so do not edit it manually.
 
-If you encounter issues not covered here, please open an issue in this repository or join our [Slack community](https://join.slack.com/t/featbit/shared_invite/zt-1ew5e2vbb-x6Apan1xZOaYMnFzqZkGNQ) for assistance.
+### 4. Import into PostgreSQL
+
+Import the files from `csvs/` using the connection configured in `.env`:
+
+```bash
+npm run import-into-postgres
+```
+
+The command validates the export and imports it into the empty target database. Changes are rolled back if import fails.
+
+After import, configure FeatBit to use PostgreSQL and verify login, permissions and SDK evaluations.
+
+## Project structure
+
+- `scripts/`: command entry points for PostgreSQL initialization, MongoDB export and PostgreSQL import.
+- `src/`: migration logic, source normalization, integrity checks, table mappings and per-collection converters.
+- `tests/`: unit and Docker integration tests.
