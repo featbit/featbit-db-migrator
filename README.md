@@ -25,7 +25,7 @@ A Node.js utility for migrating an **already-upgraded FeatBit 5.4.10 MongoDB dat
 Clone this repository and enter its directory:
 
 ```bash
-git clone --branch feat/migrate-featbit-5.4.10 --single-branch https://github.com/featbit/featbit-db-migrator.git
+git clone --branch v5.4.10 --single-branch https://github.com/featbit/featbit-db-migrator.git
 cd featbit-db-migrator
 ```
 
